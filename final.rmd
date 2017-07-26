@@ -24,7 +24,7 @@ This dataset contains 4,898 rows of white wines records data and 11 columns of v
 1. **quality** (score between 0 to 10)
 
 
-
+## Utilization and Installation of Libraries/Packages
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
 # Load all the package libraries
 # Uncomment the following lines in case the below libraries are not installed on your machine
@@ -58,8 +58,8 @@ library(memisc)
 library(reshape2)
 ```
 
-Descriptive Statistics on different variables
-========================================================
+# Descriptive Statistics on different variables
+
 ```{r}
 # Load the Data
 getwd()
@@ -92,22 +92,37 @@ describe(wine)
 
 # Univariate Plots Section
 
-> **Tip**: In this section, you should perform some preliminary exploration of
-your dataset. Run some summaries of the data and create univariate plots to
-understand the structure of the individual variables in your dataset. Don't
-forget to add a comment after each plot or closely-related group of plots!
-There should be multiple code chunks and text sections; the first one below is
-just to help you get started.
 
 ```{r echo=FALSE, Univariate_Plots}
+qplot(data = wine, x = factor(quality))
+table(wine$quality)
 
+ggplot(melt(wine[2:ncol(wine)]),aes(x = value)) + 
+    facet_wrap(~variable,scales = "free") + 
+    geom_histogram()
+
+qplot(data = wine, x = alcohol)
+qplot(data=wine, x=residual.sugar)
+qplot(data = wine, x = chlorides, binwidth = 1/500)
+#1
+
+wine$quality.joined <- cut(wine$quality, c(0,4,7,10))
+
+
+#2
+
+high <- subset(wine, wine$quality >= 8)
+low <- subset(wine,wine$quality <= 4)
+highlow <- subset(wine,wine$quality > 7 | wine$quality < 5)
+middle <- subset(wine,wine$quality <= 7 & wine$quality >= 5)
+
+
+#summary(high)
+#summary(low)
+
+#3
 ```
 
-> **Tip**: Make sure that you leave a blank line between the start / end of
-each code block and the end / start of your Markdown text so that it is
-formatted nicely in the knitted text. Note as well that text on consecutive
-lines is treated as a single space. Make sure you have a blank line between
-your paragraphs so that they too are formatted for easy readability.
 
 # Univariate Analysis
 
