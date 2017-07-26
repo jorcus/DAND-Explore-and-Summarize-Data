@@ -6,6 +6,7 @@ Sources: Created by: Paulo Cortez (Univ. Minho), Antonio Cerdeira, Fernando Alme
 This dataset contains 4,898 rows of white wines records data and 11 columns of variables on quantifying the chemical properties of each wine. The last columns of this dataset have recorded the output of this dataset which is the quality of the wine that rated by at least 3 wine experts. The ratings are rated from the lowest of 0 to 10 that represented "VERY POOR" to "VERY EXCELLENT"!
 
 <h3>Description of attributes:</h3>
+
 > Input variables (based on physicochemical tests):
 1. **fixed.acidity** (tartaric acid - g / dm^3): most acids involved with wine or fixed or nonvolatile (do not evaporate readily)
 2. **volatile.acidity** (acetic acid - g / dm^3): volatile acidity: the amount of acetic acid in wine, which at too high of levels can lead to an unpleasant, vinegar taste
