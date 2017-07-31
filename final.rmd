@@ -94,45 +94,44 @@ describe(wine)
 
 
 ```{r echo=FALSE, Univariate_Plots}
-qplot(data = wine, x = factor(quality))
+
+# Plot each of the input variable
+qplot(data = wine, x = fixed.acidity, xlab = 'fixed acidity (tartaric acid - g/dm^3)' , binwidth = 1/5)
+qplot(data = wine, x = volatile.acidity, xlab = "volatile = acidity (acetic acid - g / dm^3)", binwidth = 1/100)
+qplot(data = wine, x = citric.acid, xlab = "citric acid (g / dm^3)", binwidth = 1/60)
+qplot(data = wine, x = residual.sugar, xlab = "residual sugar (g / dm^3)")
+qplot(data = wine, x = chlorides, xlab = "chlorides (sodium chloride - g / dm^3)", binwidth = 1/400)
+qplot(data = wine, x = free.sulfur.dioxide, xlab = "free sulfur dioxide (mg / dm^3)", binwidth = 3.5)
+qplot(data = wine, x = total.sulfur.dioxide, xlab = "total sulfur dioxide (mg/dm^3)", binwidth = 8)
+qplot(data = wine, x = density, xlab = "density (g / cm^3)", binwidth = 1/1500)
+qplot(data = wine, x = pH, xlab = "pH (0 (very acidic) to 14 (very basic))", binwidth = 1/50)
+qplot(data = wine, x = sulphates, xlab = "sulphates (potassium sulphate - g / dm3)", binwidth = 1/100)
+qplot(data = wine, x = alcohol, xlab = "alcohol (% by volume)", binwidth = 1/8)
+
+# Plot output variable
+qplot(data = wine, x = factor(quality), xlab = "quality (score between 0 to 10)")
+
+# Numbers of output in each quality
 table(wine$quality)
 
-ggplot(melt(wine[2:ncol(wine)]),aes(x = value)) + 
-    facet_wrap(~variable,scales = "free") + 
-    geom_histogram()
+# Categorize wine quality to below_standard, standard, professional
+wine$quality.group <- cut(wine$quality, c(0,4,7,10), labels=c("below_standard", "standard", "professional"))
 
-qplot(data = wine, x = alcohol)
-qplot(data=wine, x=residual.sugar)
-qplot(data = wine, x = chlorides, binwidth = 1/500)
-#1
+quality.group.plot<-qplot(x = quality.group,data = wine)
+grid.arrange(quality.group.plot)
 
-wine$quality.joined <- cut(wine$quality, c(0,4,7,10))
-
-
-#2
-
-high <- subset(wine, wine$quality >= 8)
-low <- subset(wine,wine$quality <= 4)
-highlow <- subset(wine,wine$quality > 7 | wine$quality < 5)
-middle <- subset(wine,wine$quality <= 7 & wine$quality >= 5)
-
-
-#summary(high)
-#summary(low)
-
-#3
+# Numbers of each wine quality
+summary(wine$quality.group)
 ```
 
 
 # Univariate Analysis
 
-> **Tip**: Now that you've completed your univariate explorations, it's time to
-reflect on and summarize what you've found. Use the questions below to help you
-gather your observations and add your own if you have other thoughts!
-
 ### What is the structure of your dataset?
+This dataset contains 4,898 rows of white wines records data and 13 variables with 11 columns of variables on quantifying the chemical properties of each wine.
 
 ### What is/are the main feature(s) of interest in your dataset?
+
 
 ### What other features in the dataset do you think will help support your \
 investigation into your feature(s) of interest?
