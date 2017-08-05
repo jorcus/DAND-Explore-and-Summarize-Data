@@ -103,7 +103,6 @@ describe(wine)
 qplot(data = wine, x = fixed.acidity,y = ..density.., geom = "histogram", fill=I("blue"), col=I("red"),  alpha=I(.2), xlab = 'fixed acidity (tartaric acid - g/dm^3)', ylab = "count", binwidth = 1/5)+
   stat_density(geom = "line")
 
-
 qplot(data = wine, x = volatile.acidity, y = ..density.., geom = "histogram", fill=I("blue"), col=I("red"),  alpha=I(.2), xlab = "volatile acidity (acetic acid - g / dm^3)", ylab = "count", binwidth = 1/100) + stat_density(geom = "line") + stat_density(geom = "line")
 
 qplot(data = wine, x = citric.acid, y = ..density.., geom = "histogram", fill=I("blue"), col=I("red"),  alpha=I(.2), xlab = "citric acid (g / dm^3)", ylab = "count", binwidth = 1/60) + stat_density(geom = "line")
@@ -131,7 +130,7 @@ qplot(data = wine, x = factor(quality), fill=I("blue"), col=I("red"),  alpha=I(.
 table(wine$quality)
 
 # Categorize wine quality to below_standard, standard, professional in new group
-wine$quality.group <- cut(wine$quality, c(0,4,7,10), labels=c("below_standard", "standard", "professional"))
+wine$quality.group <- cut(wine$quality, c(0,5,7,10), labels=c("below_standard", "standard", "professional"))
 
 quality.group.plot<-qplot(x = quality.group,data = wine)
 grid.arrange(quality.group.plot)
@@ -159,8 +158,8 @@ The output of 11 variable of chemical properties which influence the quality of 
 
 ### Did you create any new variables from existing variables in the dataset?
 Yes, we created a new group with cut() that categorize quality of white wine into three standard which is below_standard, standard, professional.
-below_standard => 0 ~ 4
-standard => 5 ~ 7
+below_standard => 0 ~ 5
+standard => 6 ~ 7
 professional => 8 ~ 10
 
 ### Of the features you investigated, were there any unusual distributions? Did you perform any operations on the data to tidy, adjust, or change the form of the data? If so, why did you do this?
@@ -254,17 +253,20 @@ Here's some insight of residual.sugar, alcohol and density. Seem like the graph 
 Now, you can observe the graph easily!
 ```{r echo=FALSE}
 droped_outlier <-  wine[wine$residual.sugar < 30,]
-ggplot(droped_outlier, aes(x=residual.sugar, y=alcohol)) +
-  geom_jitter(alpha = .05)
-ggplot(droped_outlier, aes(x=residual.sugar, y=density)) +
-  geom_jitter(alpha = .05)
-ggplot(droped_outlier, aes(x=alcohol, y=density)) +
-  geom_jitter(alpha = .05)
+ggplot(droped_outlier, aes(x=residual.sugar, y=alcohol, colour = factor(quality))) +
+  geom_jitter(alpha = .25)
+ggplot(droped_outlier, aes(x=residual.sugar, y=density, colour = factor(quality))) +
+  geom_jitter(alpha = .25)
+ggplot(droped_outlier, aes(x=alcohol, y=density, colour = factor(quality))) +
+  geom_jitter(alpha = .25)
+
+
 ```
 
 # Bivariate Analysis
 
 ### Talk about some of the relationships you observed in this part of the investigation. How did the feature(s) of interest vary with other features in the dataset?
+An overview, the alcohol and residual sugar value appears to influences the wine quality. Some other's input variable include free sulfer dioxide, total sulfer dioxide also and density. 
 
 ### Did you observe any interesting relationships between the other features (not the main feature(s) of interest)?
 We used the scatterplot to visualize the alcohol/sugar content and density. As you can see, there's some extreme values there!
@@ -273,61 +275,56 @@ We used the scatterplot to visualize the alcohol/sugar content and density. As y
 The strongest relationship I found according to the plot is residual sugar with density, then come to the second strongest is alcohol with density.
 
 # Multivariate Plots Section
+I'm used the droped_outlier again.
 ```{r echo=FALSE, Multivariate_Plots}
+ggplot(data = droped_outlier, aes(y = residual.sugar, x = alcohol)) +
+  geom_point(aes(size = density,color = density)) +
+  scale_colour_gradientn(colours=c("red","magenta","blue"))
 
 ```
 
 # Multivariate Analysis
 
-### Talk about some of the relationships you observed in this part of the investigation. Were there features that strengthened each other in terms of looking at your feature(s) of interest?
+### Talk about some of the relationships you observed in this part of the investigation. Were there features that strengthened each other in terms of looking at your feature(s) of interest?Were there any interesting or surprising interactions between features?
+The interesting thing I found at the plot is it's pretty obvious to see the density is getting small when the alcohol is high with low residual sugar.
 
-### Were there any interesting or surprising interactions between features?
 
-### OPTIONAL: Did you create any models with your dataset? Discuss the strengths and limitations of your model.
 
 ------
 
 # Final Plots and Summary
-
-> **Tip**: You've done a lot of exploration and have built up an understanding
-of the structure of and relationships between the variables in your dataset.
-Here, you will select three plots from all of your previous exploration to
-present here as a summary of some of your most interesting findings. Make sure
-that you have refined your selected plots for good titling, axis labels (with
-units), and good aesthetic choices (e.g. color, transparency). After each plot,
-make sure you justify why you chose each plot by describing what it shows.
-
 ### Plot One
 ```{r echo=FALSE, Plot_One}
-
+qplot(data = wine, x = factor(quality), fill = quality) +
+  ggtitle("White Wine Ratings") +
+  xlab("Quality (below_standard to professional)") +
+  ylab("Counts")
 ```
 
 ### Description One
+According to our analysis, most of the white wines rating is in between of 5 to 7. However, they are only fews record on quality with 3, 4, 8 and 9. There's some null record on this dataset like quality with 1, 2 and 10.
 
 
 ### Plot Two
-```{r echo=FALSE, Plot_Two}
-
+```{r echo=FALSE, Plot_Tw}
+ggplot(wine, aes(x = free.sulfur.dioxide, y = alcohol, colour = factor(quality))) + 
+  geom_point(size=2.5)
 ```
 
 ### Description Two
-
+The above plot indicates that for the  alcohol and free sulfur dioxide content. The quality of white wines is quite low while the free sulfur dioxide is getting higher. In order to get a high quality white wines, according to this plot seems like we prove again that high alcohol content will influence the quality of white wines. However, the free dioxide should be in the range of 20 to 60 in order to get a good quality.
 
 ### Plot Three
 ```{r echo=FALSE, Plot_Three}
-
+ggplot(data = droped_outlier, aes(y = residual.sugar, x = alcohol)) +
+  geom_point(aes(size = density,color = density)) +
+  scale_colour_gradientn(colours=c("red","magenta","blue"))
 ```
 
 ### Description Three
-
+While exploring the correlation of alcohol, residual sugar and density, we found some interesting knowledge of white wines with difference chemical properties. The interesting thing I found at the plot is it's pretty obvious to see the density is getting small when the alcohol is high with low residual sugar. If you expecting to have low density, increasing the alcohol content and lowering the residual sugar should be good for you and vice visa.
 ------
 
 # Reflection
+To get myself familiar with this dataset, I began with extracting the structure of this dataset. This dataset contains 4898 records of white wines and 13 features. Since I don't familiar with this dataset, I try to visualize the dataset from the simplest plot which is histogram. Histogram was doing good to help me get some insight for this dataset. However, to looking for how we get a high quality white wine, I'd visualize some scatterplot to explore the deep insight and get some overview of this. When visualize the dataset, we can't really see it in depth because of outlier, So, we remove it. Hooray! Now, we do one step closer to this dataset. Last but not least, it's always good when the alcohol level is around 12 to 14. If you wish to get a good white wines, this is a simplest thing you should do.
 
-> **Tip**: Here's the final step! Reflect on the exploration you performed and
-the insights you found. What were some of the struggles that you went through?
-What went well? What was surprising? Make sure you include an insight into
-future work that could be done with the dataset.
-
-> **Tip**: Don't forget to remove this, and the other **Tip** sections before
-saving your final work and knitting the final report!
