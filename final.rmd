@@ -323,7 +323,7 @@ ggplot(data = droped_outlier, aes(y = residual.sugar, x = alcohol)) +
 
 ### Description Three
 While exploring the correlation of alcohol, residual sugar and density, we found some interesting knowledge of white wines with difference chemical properties. The interesting thing I found at the plot is it's pretty obvious to see the density is getting small when the alcohol is high with low residual sugar. If you expecting to have low density, increasing the alcohol content and lowering the residual sugar should be good for you and vice visa.
-------
+
 
 # Reflection
 To get myself familiar with this dataset, I began with extracting the structure of this dataset. This dataset contains 4898 records of white wines and 13 features. Since I don't familiar with this dataset, I try to visualize the dataset from the simplest plot which is histogram. Histogram was doing good to help me get some insight for this dataset. However, to looking for how we get a high quality white wine, I'd visualize some scatterplot to explore the deep insight and get some overview of this. When visualize the dataset, we can't really see it in depth because of outlier, So, we remove it. Hooray! Now, we do one step closer to this dataset. Last but not least, it's always good when the alcohol level is around 12 to 14. If you wish to get a good white wines, this is a simplest thing you should do.
