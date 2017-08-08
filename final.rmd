@@ -121,7 +121,11 @@ qplot(data = wine, x = pH, y = ..density.., geom = "histogram", fill=I("blue"), 
 
 qplot(data = wine, x = sulphates, y = ..density.., geom = "histogram", fill=I("blue"), col=I("red"),  alpha=I(.2), xlab = "sulphates (potassium sulphate - g / dm3)", ylab = "count", binwidth = 1/100) + stat_density(geom = "line")
 
-qplot(data = wine, x = alcohol, y = ..density.., geom = "histogram", fill=I("blue"), col=I("red"),  alpha=I(.2), xlab = "alcohol (% by volume)", ylab = "count", binwidth = 1/8) + stat_density(geom = "line")
+qplot(data = wine, x = sulphates, y = ..density.., geom = "histogram", 
+      fill=I("blue"), col=I("red"),  alpha=I(.2), 
+      xlab = "sulphates (potassium sulphate - g / dm3)", ylab = "count", 
+      binwidth = 1/100) +
+  stat_density(geom = "line")
 
 # Plot output variable
 qplot(data = wine, x = factor(quality), fill=I("blue"), col=I("red"),  alpha=I(.2), xlab = "quality (score between 0 to 10)")
@@ -235,6 +239,7 @@ corrplot(
 pairs.panels(wine)
 
 ```
+
 According to the plot above, We probably can ignore the others correlation due to we found out the correlations.
 
 ```{r echo=FALSE}
@@ -247,6 +252,7 @@ ggplot(wine, aes(x=alcohol, y=density)) +
 
 
 ```
+
 Here's some insight of residual.sugar, alcohol and density. Seem like the graph have some outlier, which making the plot difficult to observe. I remove the outlier and name is as droped_outlier and visualize it. 
 
 
